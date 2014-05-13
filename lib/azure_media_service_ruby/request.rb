@@ -7,7 +7,7 @@ module AzureMediaServiceRuby
 
     def get(endpoint, params={})
 
-      setToken()
+      setToken() if token_expire?
 
       res = conn(@config[:mediaURI]).get do |req|
         req.url endpoint
@@ -58,9 +58,14 @@ module AzureMediaServiceRuby
         }
       end
 
-      p res.body
       @access_token = res.body["access_token"]
       @token_expires = Time.now.to_i + res.body["expires_in"].to_i
+    end
+
+    def token_expire?
+      return true unless @access_token 
+      return true if Time.now.to_i >= @token_expires
+      return false
     end
   end
 end

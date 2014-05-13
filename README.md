@@ -1,6 +1,6 @@
 # AzureMediaServiceRuby
 
-TODO: Write a gem description
+Windows Azure Media Service API Client
 
 ## Installation
 
@@ -18,11 +18,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+ams = new AzureMediaServiceRuby::Service.new(client_id: 'xxx', client_secret: 'xxxxxxxxxxxxxxxxx')
+```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/azure_media_service_ruby/fork )
+1. Fork it ( https://github.com/murayama/azure_media_service_ruby/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

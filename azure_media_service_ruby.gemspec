@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["murayama@logiclogic.jp"]
   spec.summary       = %q{Azure Media Service SDK for ruby}
   spec.description   = %q{Azure Media Service SDK for ruby}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/murayama/azure_media_service_ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

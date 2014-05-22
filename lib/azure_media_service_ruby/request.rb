@@ -19,6 +19,37 @@ module AzureMediaServiceRuby
       res.body
     end
 
+    def post(endpoint, body)
+      setToken if token_expire?
+
+      res = conn(@config[:mediaURI]).post do |req|
+        req.url endpoint
+        req.headers = @default_headers
+        req.headers[:Authorization] = "Bearer #{@access_token}"
+        req.body = body
+      end
+    end
+
+    def put(url, body)
+
+      _conn = conn(url) do |builder|
+        builder.request :multipart
+      end
+
+      headers = {
+        'Content-Type' => 'application/octet-stream',
+        'x-ms-blob-type' => 'BlockBlob',
+        'x-ms-version' => '2011-08-18', # Storage API Version
+        'Content-Length' => body.size.to_s
+      }
+
+      res = _conn.put do |req|
+        req.headers = headers
+        req.body = body
+      end
+
+    end
+
     private
     def build_config(config)
 
@@ -45,6 +76,9 @@ module AzureMediaServiceRuby
         builder.use FaradayMiddleware::EncodeJson
         builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
         builder.adapter Faraday.default_adapter
+        if block_given?
+          yield(builder)
+        end
       end
     end
 

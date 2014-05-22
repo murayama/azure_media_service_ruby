@@ -1,6 +1,8 @@
 require "azure_media_service_ruby/version"
 require "faraday"
 require "faraday_middleware"
+require 'time'
+require 'mime/types'
 
 module AzureMediaServiceRuby
   def self.load_path *path

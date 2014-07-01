@@ -1,6 +1,6 @@
 module AzureMediaServiceRuby
   module Model
-    class Assets < Base
+    class AccessPolicy < Base
 
     end
   end

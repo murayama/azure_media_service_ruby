@@ -1,2 +1,7 @@
 require 'azure_media_service_ruby/model/base'
-require 'azure_media_service_ruby/model/assets'
+require 'azure_media_service_ruby/model/asset'
+require 'azure_media_service_ruby/model/accesss_policy'
+require 'azure_media_service_ruby/model/locator'
+require 'azure_media_service_ruby/model/asset_file'
+require 'azure_media_service_ruby/model/media_processor'
+require 'azure_media_service_ruby/model/job'

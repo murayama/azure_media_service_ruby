@@ -10,7 +10,7 @@ module AzureMediaServiceRuby
       setToken() if token_expire?
 
       res = conn(@config[:mediaURI]).get do |req|
-        req.url endpoint
+        req.url URI.escape(endpoint, '():')
         req.headers = @default_headers
         req.headers[:Authorization] = "Bearer #{@access_token}"
         req.params = params
@@ -28,6 +28,7 @@ module AzureMediaServiceRuby
         req.headers[:Authorization] = "Bearer #{@access_token}"
         req.body = body
       end
+      res.body
     end
 
     def put(url, body)
@@ -36,18 +37,17 @@ module AzureMediaServiceRuby
         builder.request :multipart
       end
 
-      headers = {
-        'Content-Type' => 'application/octet-stream',
-        'x-ms-blob-type' => 'BlockBlob',
-        'x-ms-version' => '2011-08-18', # Storage API Version
-        'Content-Length' => body.size.to_s
-      }
+      headers = {}
+
+      if block_given?
+        yield(headers)
+      end
 
       res = _conn.put do |req|
         req.headers = headers
         req.body = body
       end
-
+      res.body
     end
 
     private
@@ -55,7 +55,7 @@ module AzureMediaServiceRuby
 
       @config = config || {}
       # @config[:mediaURI] = "https://media.windows.net/API/"
-      @config[:mediaURI] = "https://wamsos1clus001rest-hs.cloudapp.net/api"
+      @config[:mediaURI] = "https://wamsos1clus001rest-hs.cloudapp.net/api/"
       @config[:tokenURI] = "https://wamsprodglobal001acs.accesscontrol.windows.net/v2/OAuth2-13"
       @config[:client_id] ||= ''
       @config[:client_secret] ||= ''
@@ -75,7 +75,8 @@ module AzureMediaServiceRuby
         builder.response :logger
         builder.use FaradayMiddleware::EncodeJson
         builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
-        builder.adapter Faraday.default_adapter
+        # builder.adapter Faraday.default_adapter
+        builder.adapter :httpclient
         if block_given?
           yield(builder)
         end

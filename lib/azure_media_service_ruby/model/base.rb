@@ -1,13 +1,13 @@
+require 'ostruct'
 module AzureMediaServiceRuby
   module Model
-    class Base
+    class Base < OpenStruct
+
+      attr_reader :original_data
 
       def initialize(hash)
-        @__original_data = hash
-      end
-
-      def method_missing(key, val)
-
+        super
+        @original_data = hash
       end
     end
   end

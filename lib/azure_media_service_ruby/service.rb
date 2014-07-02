@@ -6,8 +6,8 @@ module AzureMediaServiceRuby
 
     attr_reader :request
 
-    def initialize(config)
-      @request = Request.new(config)
+    def initialize
+      @request = AzureMediaServiceRuby.request
     end
 
     # assets

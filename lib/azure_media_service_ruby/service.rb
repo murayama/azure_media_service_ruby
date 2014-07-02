@@ -1,6 +1,9 @@
 module AzureMediaServiceRuby
   class Service
 
+    UPLOAD_LIMIT_SIZE = 4194304 # 4MB
+    READ_BUFFER_SIZE       = 4000000
+
     attr_reader :request
 
     def initialize(config)
@@ -12,13 +15,12 @@ module AzureMediaServiceRuby
       if asset_id.nil?
         res = @request.get("Assets")
         assets = []
-        p res
         res["d"]["results"].each do |a|
-          assets << Model::Assets.new(a)
+          assets << Model::Asset.new(a)
         end
       else
         res = @request.get("Assets('#{asset_id}')")
-        assets = Model::Assets.new(res["d"])
+        assets = Model::Asset.new(res["d"])
       end
       assets
     end
@@ -29,7 +31,30 @@ module AzureMediaServiceRuby
         "Name" => name
       }
       res = @request.post("Assets", post_body)
-      res["d"]
+      Model::Asset.new(res["d"])
+    end
+
+    # access policy create
+    def create_access_policy(name:'Policy', duration_minutes:300, permission:2)
+      post_body = {
+        "Name" => name,
+        "DurationInMinutes" => duration_minutes,
+        "Permissions" => permission
+      }
+      res = @request.post("AccessPolicies", post_body)
+      Model::AccessPolicy.new(res["d"])
+    end
+
+    # locator create
+    def create_locator(policy_id:,asset_id:,type:1)
+      post_body = {
+        "AccessPolicyId" => policy_id,
+        "AssetId" => asset_id,
+        "Type" => type,
+        "StartTime" => (Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')
+      }
+      res = @request.post("Locators", post_body)
+      Model::Locator.new(res["d"])
     end
 
     def upload_media(filepath)
@@ -42,40 +67,28 @@ module AzureMediaServiceRuby
         f = Faraday::UploadIO.new(filepath, mime_type)
 
         # create Assets
-        res = create_asset(asset_name)
-        # res = @request.post("Assets", %!{"Name":"#{asset_name}"}!)
-
-        asset_id = res["Id"]
+        asset = create_asset(asset_name)
 
         # create policy
-        res = @request.post("AccessPolicies", %!{"Name": "UploadPolicy", "DurationInMinutes": "1800", "Permissions":2}!)
-
-        policy_id = res["d"]["Id"]
+        policy = create_access_policy(name:"UploadPolicy", duration_minutes:1800, permission:2)
 
         # create Locator
-        res = @request.post("Locators", %!{"AccessPolicyId":"#{policy_id}", "AssetId":"#{asset_id}", "Type":"1", "StartTime":"#{(Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')}"}!)
-
-        locator_info = res["d"]
+        locator = create_locator(policy_id:policy.Id, asset_id:asset.Id, type:1)
 
         # upload
-        upload_url = File.join(locator_info["BaseUri"], filename)
-        upload_url += locator_info["ContentAccessComponent"]
+        upload_url = File.join(locator.BaseUri, filename)
+        upload_url += locator.ContentAccessComponent
 
-        if f.size > 4194304 # 4MB以上
+        if f.size > UPLOAD_LIMIT_SIZE
           # put block and put block list API
           i = 1
           blockids = []
-          while buf = f.read(4000000) do
-            id = "%05d" % i
+          while buf = f.read(READ_BUFFER_SIZE) do
+            id = "%05d" % i # サイズを同じにしなければいけないので、5桁にする
             blockid = Base64.strict_encode64("#{id}-#{filename}")
             blockids << blockid
             put_block_url = upload_url + "&comp=block&blockid=#{URI.escape(blockid)}"
-            res = @request.put(put_block_url, buf) do |headers|
-              headers['x-ms-blob-type'] = 'BlockBlob'
-              headers['x-ms-version']   = '2014-02-14' # Storage API Version
-              headers['Content-Type']   = 'application/octet-stream'
-              headers['Content-Length'] = buf.size.to_s
-            end
+            res = put_blob(url:put_block_url, blob:buf)
             i+=1
           end
 
@@ -97,17 +110,11 @@ module AzureMediaServiceRuby
           end
 
         else
-          # put blob API
-          res = @request.put(upload_url, f) do |headers|
-            headers['x-ms-blob-type'] = 'BlockBlob'
-            headers['x-ms-version']   = '2014-02-14' # Storage API Version
-            headers['Content-Type']   = 'application/octet-stream'
-            headers['Content-Length'] = f.size.to_s
-          end
+          res = put_blob(url:upload_url, blob:f)
         end
 
         # create metadata
-        @request.get("CreateFileInfos", {"assetid" => "'#{URI.encode(asset_id)}'"})
+        @request.get("CreateFileInfos", {"assetid" => "'#{URI.encode(asset.Id)}'"})
 
       rescue => e
         p e.message
@@ -116,33 +123,21 @@ module AzureMediaServiceRuby
     end
 
     def create_job(asset_id, encode_configuration)
-      res = media_processor_id_by_name('Windows Azure Media Encoder')
-      media_processor_id = res["Id"]
+      media_processor = media_processor_id_by_name('Windows Azure Media Encoder')
 
-      puts "***** media processor id => #{media_processor_id}"
+      puts "***** media processor id => #{media_processor.Id}"
 
       asset = assets(asset_id)
       conf_str = encode_configuration.gsub(' ', '_')
 
-      job_names = []
-      job_names << asset["Name"]
-      job_names << 'EncodeJob'
-      job_names << conf_str
-      job_name = job_names.join('-')
-
-      output_names = []
-      output_names << asset["Name"]
-      output_names << conf_str
-      output_names << 'Output'
-      output_name = output_names.join('-')
-      puts job_name
+      job_name, output_name = job_and_output_name(asset_name:asset.Name, conf:conf_str)
 
       post_body = {}
       post_body["Name"] = job_name
       post_body["InputMediaAssets"] = [
         {
           "__metadata" => {
-            "uri" => asset['__metadata']["uri"]
+            "uri" => asset.__metadata["uri"]
           }
         }
       ]
@@ -156,30 +151,27 @@ module AzureMediaServiceRuby
       post_body["Tasks"] = [
         {
           "Configuration" => encode_configuration,
-          "MediaProcessorId" => media_processor_id,
+          "MediaProcessorId" => media_processor.Id,
           "TaskBody" => task_body
         }
       ]
       puts post_body
 
       res = @request.post('Jobs', post_body)
-      # res["d"]
+      Model::Job.new(res["d"])
     end
 
     # publish asset
     def publish(asset_id)
       asset = assets(asset_id)
 
-      res = @request.post("AccessPolicies", %!{"Name": "DownloadPolicy", "DurationInMinutes": "1800", "Permissions":1}!)
+      policy = create_access_policy(name:"DownloadPolicy", duration_minutes:1800, permission:1)
 
-      policy_id = res["d"]["Id"]
-
-      res = @request.post("Locators", %!{"AccessPolicyId":"#{policy_id}", "AssetId":"#{asset_id}", "Type":"2", "StartTime":"#{(Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')}"}!)
+      locator = create_locator(policy_id:policy.Id, asset_id:asset.Id, type:2)
     end
 
     def publish_url(asset_id)
       asset = assets(asset_id)
-
     end
 
     def job_state(job_id)
@@ -188,11 +180,38 @@ module AzureMediaServiceRuby
 
     def media_processor_id_by_name(name)
       res = @request.get('MediaProcessors')
-      res["d"]["results"].select {|v| 
+      mp = res["d"]["results"].select {|v| 
         v["Name"] == 'Windows Azure Media Encoder'
       }.sort{|a,b|
         b["Version"].to_i <=> a["Version"].to_i
       }.first
+      Model::MediaProcessor.new(mp)
+    end
+
+    private
+    def put_blob(url:, blob:)
+      res = @request.put(url, blob) do |headers|
+        headers['x-ms-blob-type'] = 'BlockBlob'
+        headers['x-ms-version']   = '2014-02-14' # Storage API Version
+        headers['Content-Type']   = 'application/octet-stream'
+        headers['Content-Length'] = blob.size.to_s
+      end
+    end
+
+    def job_and_output_name(asset_name:, conf:)
+      job_names = []
+      job_names << asset_name
+      job_names << 'EncodeJob'
+      job_names << conf
+      job_name = job_names.join('-')
+
+      output_names = []
+      output_names << asset_name
+      output_names << conf
+      output_names << 'Output'
+      output_name = output_names.join('-')
+
+      [job_name, output_name]
     end
 
   end

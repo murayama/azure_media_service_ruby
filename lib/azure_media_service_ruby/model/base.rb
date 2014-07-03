@@ -8,6 +8,8 @@ module AzureMediaServiceRuby
       def initialize(hash)
         super
         @original_data = hash
+        @request = AzureMediaServiceRuby.request
+        @service = AzureMediaServiceRuby.service
       end
     end
   end

@@ -1,4 +1,5 @@
 require 'azure_media_service_ruby/version'
+require 'azure_media_service_ruby/config'
 require 'azure_media_service_ruby/request'
 require 'azure_media_service_ruby/service'
 require 'azure_media_service_ruby/model'
@@ -14,8 +15,11 @@ require 'builder/xmlmarkup'
 
 module AzureMediaServiceRuby
 
+  @@id
   @@secret
+
   @@request
+  @@service
 
   class << self
 
@@ -25,6 +29,10 @@ module AzureMediaServiceRuby
 
     def request
       @@request ||= Request.new(client_id:@@id, client_secret:@@secret)
+    end
+
+    def service
+      @@service ||= Service.new
     end
 
     def id=(v)

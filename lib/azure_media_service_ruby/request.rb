@@ -55,8 +55,8 @@ module AzureMediaServiceRuby
 
       @config = config || {}
       # @config[:mediaURI] = "https://media.windows.net/API/"
-      @config[:mediaURI] = "https://wamsos1clus001rest-hs.cloudapp.net/api/"
-      @config[:tokenURI] = "https://wamsprodglobal001acs.accesscontrol.windows.net/v2/OAuth2-13"
+      @config[:mediaURI] = Config::MEDIA_URI
+      @config[:tokenURI] = Config::TOKEN_URI
       @config[:client_id] ||= ''
       @config[:client_secret] ||= ''
 

@@ -72,11 +72,12 @@ module AzureMediaServiceRuby
     def conn(url)
       conn = Faraday::Connection.new(:url => url, :ssl => {:verify => false}) do |builder|
         builder.request :url_encoded
-        builder.response :logger
+        # builder.response :logger
         builder.use FaradayMiddleware::EncodeJson
         builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
+        builder.use Faraday::Adapter::EMSynchrony
         # builder.adapter Faraday.default_adapter
-        builder.adapter :httpclient
+        # builder.adapter :httpclient
         if block_given?
           yield(builder)
         end

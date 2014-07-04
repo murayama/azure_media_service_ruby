@@ -19,7 +19,18 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-ams = new AzureMediaServiceRuby::Service.new(client_id: 'xxx', client_secret: 'xxxxxxxxxxxxxxxxx')
+AzureMediaServiceRuby.configure do |config|
+ cofig.id = 'xxxxxxxx' 
+ config.secret = 'xxxxxxxxxxxxxxxxxx'
+end
+
+ams = new AzureMediaServiceRuby.service
+
+ams.upload_media('path/to/example.mp4')
+
+asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+asset.encode_job('H264 Smooth Streaming 720p')
+asset.publish
 ```
 
 ## Contributing

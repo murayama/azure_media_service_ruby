@@ -8,18 +8,12 @@ require 'faraday'
 require 'faraday_middleware'
 require 'time'
 require 'mime/types'
-require 'net/http'
-require 'httpclient'
+require "em-synchrony"
+require "em-synchrony/em-http"
 require 'base64'
 require 'builder/xmlmarkup'
 
 module AzureMediaServiceRuby
-
-  @@id
-  @@secret
-
-  @@request
-  @@service
 
   class << self
 

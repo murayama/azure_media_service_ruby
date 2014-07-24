@@ -1,4 +1,4 @@
-module AzureMediaServiceRuby
+module AzureMediaService
   module Model
     class Locator < Base
 

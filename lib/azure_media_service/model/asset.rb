@@ -1,4 +1,4 @@
-module AzureMediaServiceRuby
+module AzureMediaService
   module Model
     class Asset < Base
 
@@ -92,7 +92,7 @@ module AzureMediaServiceRuby
         media_processor = @service.media_processor_id_by_name('Windows Azure Media Encoder')
         conf_str = encode_configuration.gsub(' ', '_')
 
-        job_name, output_name = job_and_output_name(asset_name:asset.Name, conf:conf_str)
+        job_name, output_name = job_and_output_name(asset_name:self.Name, conf:conf_str)
 
         post_body = {}
         post_body["Name"] = job_name

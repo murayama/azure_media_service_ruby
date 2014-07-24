@@ -1,8 +1,8 @@
-module AzureMediaServiceRuby
+module AzureMediaService
   class Service
 
     def initialize
-      @request = AzureMediaServiceRuby.request
+      @request = AzureMediaService.request
     end
 
     # assets

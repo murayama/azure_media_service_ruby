@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'azure_media_service_ruby/version'
+require 'azure_media_service/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "azure_media_service_ruby"
-  spec.version       = AzureMediaServiceRuby::VERSION
+  spec.name          = "azure_media_service"
+  spec.version       = AzureMediaService::VERSION
   spec.authors       = ["murayama"]
   spec.email         = ["murayama@logiclogic.jp"]
   spec.summary       = %q{Azure Media Service SDK for ruby}

@@ -1,5 +1,5 @@
 require 'ostruct'
-module AzureMediaServiceRuby
+module AzureMediaService
   module Model
     class Base < OpenStruct
 
@@ -8,8 +8,8 @@ module AzureMediaServiceRuby
       def initialize(hash)
         super
         @original_data = hash
-        @request = AzureMediaServiceRuby.request
-        @service = AzureMediaServiceRuby.service
+        @request = AzureMediaService.request
+        @service = AzureMediaService.service
       end
     end
   end

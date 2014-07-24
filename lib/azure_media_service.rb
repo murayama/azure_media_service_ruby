@@ -1,8 +1,8 @@
-require 'azure_media_service_ruby/version'
-require 'azure_media_service_ruby/config'
-require 'azure_media_service_ruby/request'
-require 'azure_media_service_ruby/service'
-require 'azure_media_service_ruby/model'
+require 'azure_media_service/version'
+require 'azure_media_service/config'
+require 'azure_media_service/request'
+require 'azure_media_service/service'
+require 'azure_media_service/model'
 
 require 'faraday'
 require 'faraday_middleware'
@@ -13,7 +13,7 @@ require "em-synchrony/em-http"
 require 'base64'
 require 'builder/xmlmarkup'
 
-module AzureMediaServiceRuby
+module AzureMediaService
 
   class << self
 

@@ -1,4 +1,4 @@
-module AzureMediaServiceRuby
+module AzureMediaService
   class Request
 
     def initialize(config)

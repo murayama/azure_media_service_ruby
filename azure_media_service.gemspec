@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "azure_media_service"
   spec.version       = AzureMediaService::VERSION
   spec.authors       = ["murayama"]
-  spec.email         = ["murayama@logiclogic.jp"]
+  spec.email         = ["mura869@gmail.com"]
   spec.summary       = %q{Azure Media Service SDK for ruby}
   spec.description   = %q{Azure Media Service SDK for ruby}
   spec.homepage      = "https://github.com/murayama/azure_media_service_ruby"

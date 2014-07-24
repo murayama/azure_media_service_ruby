@@ -6,7 +6,7 @@ Windows Azure Media Service API Client
 
 Add this line to your application's Gemfile:
 
-    gem 'azure_media_service_ruby'
+    gem 'azure_media_service'
 
 And then execute:
 
@@ -14,23 +14,33 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install azure_media_service_ruby
+    $ gem install azure_media_service
 
 ## Usage
 
 ```ruby
-AzureMediaServiceRuby.configure do |config|
+
+# initialize
+AzureMediaService.configure do |config|
  cofig.id = 'xxxxxxxx' 
  config.secret = 'xxxxxxxxxxxxxxxxxx'
 end
 
-ams = new AzureMediaServiceRuby.service
+# service instance
+ams = new AzureMediaService.service
 
+# upload file
 ams.upload_media('path/to/example.mp4')
 
+# encode job and publish
 asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
 asset.encode_job('H264 Smooth Streaming 720p')
 asset.publish
+
+# or
+ams.create_encode_job('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 'H264 Smooth Streaming 720p')
+ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+
 ```
 
 ## Contributing

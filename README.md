@@ -43,6 +43,18 @@ ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
 
 ```
 
+### Custom Encode Task
+
+```ruby
+AzureMediaService.configure do |config|
+  config.add_encode_task('Custom Encode Task', File.read('path/to/custome_task.xml'))
+end
+
+ams = new AzureMediaService.service
+asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+asset.encode_job('Custom Encode Task')
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/murayama/azure_media_service_ruby/fork )

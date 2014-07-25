@@ -82,15 +82,20 @@ module AzureMediaService
 
           clear_cache
         rescue => e
-          p e.message
-          puts e.backtrace
+          raise MediaServiceError.new(e.message)
         end
+        self
       end
 
 
       def encode_job(encode_configuration) 
         media_processor = @service.media_processor_id_by_name('Windows Azure Media Encoder')
+
         conf_str = encode_configuration.gsub(' ', '_')
+
+        if AzureMediaService.encode_tasks.has_key?(encode_configuration)
+          encode_configuration = AzureMediaService.encode_tasks[encode_configuration]
+        end
 
         job_name, output_name = job_and_output_name(asset_name:self.Name, conf:conf_str)
 

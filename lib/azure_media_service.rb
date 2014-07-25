@@ -1,4 +1,5 @@
 require 'azure_media_service/version'
+require 'azure_media_service/errors'
 require 'azure_media_service/config'
 require 'azure_media_service/request'
 require 'azure_media_service/service'
@@ -14,6 +15,8 @@ require 'base64'
 require 'builder/xmlmarkup'
 
 module AzureMediaService
+
+  @@tasks = {}
 
   class << self
 
@@ -44,6 +47,14 @@ module AzureMediaService
     def secret
       @@secret
     end
-  end
 
+    def add_encode_task(name, task)
+      @@tasks[name] = task
+    end
+
+    def encode_tasks
+      @@tasks ||= {}
+    end
+
+  end
 end

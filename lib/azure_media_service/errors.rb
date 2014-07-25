@@ -1,0 +1,2 @@
+class MediaServiceError < StandardError
+end

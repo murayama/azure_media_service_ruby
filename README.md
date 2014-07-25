@@ -27,7 +27,7 @@ AzureMediaService.configure do |config|
 end
 
 # service instance
-ams = new AzureMediaService.service
+ams = AzureMediaService.service
 
 # upload file
 ams.upload_media('path/to/example.mp4')
@@ -50,7 +50,7 @@ AzureMediaService.configure do |config|
   config.add_encode_task('Custom Encode Task', File.read('path/to/custome_task.xml'))
 end
 
-ams = new AzureMediaService.service
+ams = AzureMediaService.service
 asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
 asset.encode_job('Custom Encode Task')
 ```

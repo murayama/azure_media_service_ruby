@@ -64,6 +64,20 @@ module AzureMediaService
       asset.encode_job(encode_configuration)
     end
 
+    def jobs(job_id=nil)
+      if job_id.nil?
+        res = @request.get("Jobs")
+        jobs = []
+        res["d"]["results"].each do |a|
+          jobs << Model::Job.new(a)
+        end
+      else
+        res = @request.get("Jobs('#{job_id}')")
+        jobs = Model::Job.new(res["d"])
+      end
+      jobs
+    end
+
     # publish asset
     def publish(asset_id)
       asset = assets(asset_id)

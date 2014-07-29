@@ -30,17 +30,21 @@ end
 ams = AzureMediaService.service
 
 # upload file
-ams.upload_media('path/to/example.mp4')
+asset = ams.upload_media('path/to/example.mp4')
 
-# encode job and publish
+# encode job
 asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
-asset.encode_job('H264 Smooth Streaming 720p')
-asset.publish
+job = asset.encode_job('H264 Smooth Streaming 720p')
 
 # or
-ams.create_encode_job('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 'H264 Smooth Streaming 720p')
-ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+job = ams.create_encode_job('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 'H264 Smooth Streaming 720p')
 
+# publish asset
+asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+asset.publish()
+
+# or
+ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
 ```
 
 ### Custom Encode Task

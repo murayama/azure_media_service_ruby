@@ -7,17 +7,7 @@ module AzureMediaService
 
     # assets
     def assets(asset_id=nil)
-      if asset_id.nil?
-        res = @request.get("Assets")
-        assets = []
-        res["d"]["results"].each do |a|
-          assets << Model::Asset.new(a)
-        end
-      else
-        res = @request.get("Assets('#{asset_id}')")
-        assets = Model::Asset.new(res["d"])
-      end
-      assets
+      get('Assets', Model::Asset, job_id)
     end
 
     # assets create
@@ -65,17 +55,7 @@ module AzureMediaService
     end
 
     def jobs(job_id=nil)
-      if job_id.nil?
-        res = @request.get("Jobs")
-        jobs = []
-        res["d"]["results"].each do |a|
-          jobs << Model::Job.new(a)
-        end
-      else
-        res = @request.get("Jobs('#{job_id}')")
-        jobs = Model::Job.new(res["d"])
-      end
-      jobs
+      get('Jobs', Model::Job, job_id)
     end
 
     # publish asset
@@ -97,6 +77,20 @@ module AzureMediaService
         b["Version"].to_i <=> a["Version"].to_i
       }.first
       Model::MediaProcessor.new(mp)
+    end
+
+    def get(method, klass, id=nil)
+      if id.nil?
+        res = @request.get(method)
+        results = []
+        res["d"]["results"].each do |a|
+          results << klass.new(a)
+        end
+      else
+        res = @request.get("#{method}('#{id}')")
+        results = klass.new(res["d"])
+      end
+      results
     end
 
   end

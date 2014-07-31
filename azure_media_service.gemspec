@@ -25,8 +25,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "faraday"
   spec.add_dependency "faraday_middleware"
-  spec.add_dependency "em-synchrony"
-  spec.add_dependency "em-http-request"
+  # spec.add_dependency "em-synchrony"
+  # spec.add_dependency "em-http-request"
   spec.add_dependency "mime-types"
   spec.add_dependency "builder"
 end

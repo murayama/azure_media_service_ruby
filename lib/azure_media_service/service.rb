@@ -7,7 +7,7 @@ module AzureMediaService
 
     # assets
     def assets(asset_id=nil)
-      get('Assets', Model::Asset, job_id)
+      get('Assets', Model::Asset, asset_id)
     end
 
     # assets create

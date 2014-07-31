@@ -9,8 +9,6 @@ require 'faraday'
 require 'faraday_middleware'
 require 'time'
 require 'mime/types'
-require "em-synchrony"
-require "em-synchrony/em-http"
 require 'base64'
 require 'builder/xmlmarkup'
 

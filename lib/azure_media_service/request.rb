@@ -75,9 +75,7 @@ module AzureMediaService
         # builder.response :logger
         builder.use FaradayMiddleware::EncodeJson
         builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
-        # builder.use Faraday::Adapter::EMSynchrony
         builder.adapter Faraday.default_adapter
-        # builder.adapter :httpclient
         if block_given?
           yield(builder)
         end

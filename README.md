@@ -41,10 +41,10 @@ job = ams.create_encode_job('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx'
 
 # publish asset
 asset = ams.assets('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
-asset.publish()
+asset.publish(expire_minutes: 43200)
 
 # or
-ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
+ams.publish('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 43200)
 ```
 
 ### Custom Encode Task

@@ -128,11 +128,11 @@ module AzureMediaService
       end
 
 
-      def publish
+      def publish(expire_minutes: 43200)
         locator = locators.select {|l| l.Type == 2}.first
         unless locator
-          policy = @service.create_access_policy(name:"DownloadPolicy", duration_minutes:1800, permission:1)
-          locator = @service.create_locator(policy_id:policy.Id, asset_id: self.Id, type:2)
+          policy = @service.create_access_policy(name:"PublishPolicy", duration_minutes: expire_minutes, permission:1)
+          locator = @service.create_locator(policy_id: policy.Id, asset_id: self.Id, type: 2)
         end
         locator
       end

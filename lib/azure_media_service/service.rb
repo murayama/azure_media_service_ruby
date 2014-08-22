@@ -36,7 +36,8 @@ module AzureMediaService
         "AccessPolicyId" => policy_id,
         "AssetId" => asset_id,
         "Type" => type,
-        "StartTime" => (Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')
+        "StartTime" => (Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ'),
+        "ExpirationDateTime" => (Time.gm(2030, 12, 31, 23, 59, 59)).strftime('%Y-%m-%dT%H:%M:%SZ')
       }
       res = @request.post("Locators", post_body)
       Model::Locator.new(res["d"])
@@ -59,9 +60,9 @@ module AzureMediaService
     end
 
     # publish asset
-    def publish(asset_id)
+    def publish(asset_id, expire_minutes=nil)
       asset = assets(asset_id)
-      asset.publish
+      asset.publish(expire_minutes)
     end
 
     def publish_url(asset_id)

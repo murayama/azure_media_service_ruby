@@ -147,6 +147,16 @@ module AzureMediaService
         end
       end
 
+      def delete
+        begin 
+          res = @request.delete("Assets('#{self.Id}')")
+          clear_cache
+        rescue => e
+          raise MediaServiceError.new(e.message)
+        end
+        res
+      end
+
       private
 
       def clear_cache

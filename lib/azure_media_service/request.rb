@@ -50,6 +50,20 @@ module AzureMediaService
       res.body
     end
 
+    def delete(endpoint, params={})
+
+      setToken() if token_expire?
+
+      res = conn(@config[:mediaURI]).delete do |req|
+        req.url URI.escape(endpoint, '():')
+        req.headers = @default_headers
+        req.headers[:Authorization] = "Bearer #{@access_token}"
+        req.params = params
+      end
+
+      res.body
+    end
+
     private
     def build_config(config)
 

@@ -36,7 +36,7 @@ module AzureMediaService
 
       if res.status == 301
         @config[:mediaURI] = res.headers['location']
-        get(endpoint, body)
+        post(endpoint, body)
       else
         res.body
       end
@@ -58,7 +58,12 @@ module AzureMediaService
         req.headers = headers
         req.body = body
       end
-      res.body
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        put(url, body)
+      else
+        res.body
+      end
     end
 
     def delete(endpoint, params={})
@@ -72,7 +77,12 @@ module AzureMediaService
         req.params = params
       end
 
-      res.body
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        delete(endpoint, params)
+      else
+        res.body
+      end
     end
 
     private

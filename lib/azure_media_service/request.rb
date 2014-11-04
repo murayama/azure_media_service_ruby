@@ -16,7 +16,12 @@ module AzureMediaService
         req.params = params
       end
 
-      res.body
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        get(endpoint, params)
+      else
+        res.body
+      end
     end
 
     def post(endpoint, body)
@@ -28,7 +33,13 @@ module AzureMediaService
         req.headers[:Authorization] = "Bearer #{@access_token}"
         req.body = body
       end
-      res.body
+
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        get(endpoint, params)
+      else
+        res.body
+      end
     end
 
     def put(url, body)

@@ -5,7 +5,8 @@ module AzureMediaService
       def locators
         @locators ||= []
         if @locators.empty?
-          url = self.Locators["__deferred"]["uri"].gsub(Config::MEDIA_URI, '')
+          _uri = URI.parse(self.Locators["__deferred"]["uri"])
+          url = _uri.path.gsub('/api/','')
           res = @request.get(url)
           res["d"]["results"].each do |v|
             @locators << Model::Locator.new(v)
@@ -17,7 +18,8 @@ module AzureMediaService
       def files
         @files ||= []
         if @files.empty?
-          url = self.Files["__deferred"]["uri"].gsub(Config::MEDIA_URI, '')
+          _uri = URI.parse(self.Files["__deferred"]["uri"])
+          url = _uri.path.gsub('/api/','')
           res = @request.get(url)
           res["d"]["results"].each do |v|
             @files << Model::AssetFile.new(v)

@@ -36,7 +36,7 @@ module AzureMediaService
 
       if res.status == 301
         @config[:mediaURI] = res.headers['location']
-        get(endpoint, params)
+        get(endpoint, body)
       else
         res.body
       end

@@ -45,7 +45,7 @@ module AzureMediaService
     def upload_media(filepath)
       basename = File.basename(filepath, '.*')
       asset_name = "#{basename}-Source-#{Time.now.strftime('%Y%m%d%H%M%S')}"
-      asset = Model::Asset.create(asset_name)
+      asset = Asset.create(asset_name)
       asset.upload(filepath)
     end
 
@@ -77,7 +77,7 @@ module AzureMediaService
       }.sort{|a,b|
         b["Version"].to_i <=> a["Version"].to_i
       }.first
-      Model::MediaProcessor.new(mp)
+      MediaProcessor.new(mp)
     end
 
     def get(method, klass, id=nil)

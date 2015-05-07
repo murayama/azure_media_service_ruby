@@ -2,6 +2,21 @@ module AzureMediaService
   module Model
     class Asset < Base
 
+      class << self
+
+        def create(name)
+          post_body = {
+            "Name" => name
+          }
+          res = service.post("Assets", post_body)
+          self.new(res["d"])
+        end
+
+        def get(asset_id=nil)
+          service.get('Assets', Model::Asset, asset_id)
+        end
+      end
+
       def locators
         @locators ||= []
         if @locators.empty?

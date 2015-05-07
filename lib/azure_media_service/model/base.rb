@@ -11,6 +11,14 @@ module AzureMediaService
         @request = AzureMediaService.request
         @service = AzureMediaService.service
       end
+
+      class << self
+
+        def service
+          AzureMediaService.service
+        end
+
+      end
     end
   end
 end

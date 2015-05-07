@@ -12,6 +12,8 @@ require 'mime/types'
 require 'base64'
 require 'builder/xmlmarkup'
 
+autoload :Asset, 'model/asset'
+
 module AzureMediaService
 
   @@tasks = {}

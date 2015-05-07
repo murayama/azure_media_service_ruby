@@ -50,10 +50,10 @@ module AzureMediaService
         f = Faraday::UploadIO.new(filepath, mime_type)
 
         # create policy
-        policy = @service.create_access_policy(name:"UploadPolicy", duration_minutes:1800, permission:2)
+        policy = AccessPolicy.create(name:"UploadPolicy", duration_minutes:1800, permission:2)
 
         # create Locator
-        locator = @service.create_locator(policy_id:policy.Id, asset_id:self.Id, type:1)
+        locator = Locator.create(policy_id:policy.Id, asset_id:self.Id, type:1)
 
         # upload
         upload_url = File.join(locator.BaseUri, filename)

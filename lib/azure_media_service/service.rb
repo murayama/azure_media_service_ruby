@@ -80,6 +80,24 @@ module AzureMediaService
       MediaProcessor.new(mp)
     end
 
+    def get_protection_key_id(content_key_type)
+      res = @request.get("GetProtectionKeyId", contentKeyType: content_key_type)
+      if res["d"]
+        res["d"]["GetProtectionKeyId"]
+      else
+        raise MediaServiceError.new(res["error"]["message"]["value"])
+      end
+    end
+
+    def get_protection_key(protection_key_id)
+      res = @request.get("GetProtectionKey", ProtectionKeyId: "'#{protection_key_id}'")
+      if res["d"]
+        res["d"]["GetProtectionKey"]
+      else
+        raise MediaServiceError.new(res["error"]["message"]["value"])
+      end
+    end
+
     def get(method, klass, id=nil)
       if id.nil?
         res = @request.get(method)

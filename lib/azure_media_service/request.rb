@@ -100,7 +100,7 @@ module AzureMediaService
         "Accept"                => "application/json;odata=verbose",
         "DataServiceVersion"    => "3.0",
         "MaxDataServiceVersion" => "3.0",
-        "x-ms-version"          => "2.5"
+        "x-ms-version"          => "2.8"
       }
     end
 

@@ -147,8 +147,8 @@ module AzureMediaService
     def publish(expire_minutes: 43200)
       locator = locators.select {|l| l.Type == 2}.first
       unless locator
-        policy = @service.create_access_policy(name:"PublishPolicy", duration_minutes: expire_minutes, permission:1)
-        locator = @service.create_locator(policy_id: policy.Id, asset_id: self.Id, type: 2)
+        policy = AccessPolicy.create(name:"PublishPolicy", duration_minutes: expire_minutes, permission:1)
+        locator = Locator.create(policy_id: policy.Id, asset_id: self.Id, type: 2)
       end
       locator
     end
@@ -171,6 +171,10 @@ module AzureMediaService
         raise MediaServiceError.new(e.message)
       end
       res
+    end
+
+    def content_key_link(content_key_uri)
+      @request.post("Assets('#{self.Id}')/$links/ContentKeys", {uri: content_key_uri})
     end
 
     private

@@ -42,6 +42,19 @@ module AzureMediaService
       @files
     end
 
+    def content_keys
+      @content_keys ||= []
+      if @content_keys.empty?
+        _uri = URI.parse(self.ContentKeys["__deferred"]["uri"])
+        url = _uri.path.gsub('/api/','')
+        res = @request.get(url)
+        res["d"]["results"].each do |v|
+          @content_keys << ContentKey.new(v)
+        end
+      end
+      @content_keys
+    end
+
     def upload(filepath)
       begin
         mime_type = MIME::Types.type_for(filepath)[0].to_s
@@ -173,8 +186,8 @@ module AzureMediaService
       res
     end
 
-    def content_key_link(content_key_uri)
-      @request.post("Assets('#{CGI.escape(self.Id)}')/$links/ContentKeys", {uri: content_key_uri})
+    def content_key_link(content_key)
+      @request.post("Assets('#{CGI.escape(self.Id)}')/$links/ContentKeys", {uri: content_key.__metadata['uri']})
     end
 
     private
@@ -182,6 +195,7 @@ module AzureMediaService
     def clear_cache
       @locators = nil
       @files = nil
+      @content_keys = nil
       self
     end
 

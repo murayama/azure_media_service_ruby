@@ -19,7 +19,6 @@ module AzureMediaService
     def delete
       begin 
         res = @request.delete("ContentKeyAuthorizationPolicies('#{self.Id}')")
-        clear_cache
       rescue => e
         raise MediaServiceError.new(e.message)
       end

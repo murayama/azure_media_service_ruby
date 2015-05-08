@@ -174,7 +174,7 @@ module AzureMediaService
     end
 
     def content_key_link(content_key_uri)
-      @request.post("Assets('#{self.Id}')/$links/ContentKeys", {uri: content_key_uri})
+      @request.post("Assets('#{CGI.escape(self.Id)}')/$links/ContentKeys", {uri: content_key_uri})
     end
 
     private

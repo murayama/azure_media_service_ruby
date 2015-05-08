@@ -51,7 +51,7 @@ module AzureMediaService
     # @params key_delivery_type 1: PlayReady license 2: EnvelopeEncryption
     #
     def get_key_delivery_url(key_delivery_type)
-      @request.post("ContentKeys('#{self.Id}')/GetKeyDeliveryUrl", {KeyDeliveryType: key_delivery_type})
+      @request.post("ContentKeys('#{CGI.escape(self.Id)}')/GetKeyDeliveryUrl", {KeyDeliveryType: key_delivery_type})
     end
 
     def delete

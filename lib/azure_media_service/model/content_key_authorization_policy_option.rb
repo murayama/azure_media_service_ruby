@@ -14,12 +14,12 @@ module AzureMediaService
     }
 
     class << self
-      def create(name:, key_delivery_type:, key_delivery_configuration:, restriction:)
+      def create(name:, key_delivery_type:, key_delivery_configuration:, restrictions:)
         post_body = {
           "Name" => name,
           "KeyDeliveryType" => key_delivery_type,
           "KeyDeliveryConfiguration" => key_delivery_configuration,
-          "Restriction" => restriction
+          "Restrictions" => restrictions
         }
         res = service.post("ContentKeyAuthorizationPolicyOptions", post_body)
       end

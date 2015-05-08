@@ -21,6 +21,7 @@ module AzureMediaService
           "KeyDeliveryConfiguration" => key_delivery_configuration,
           "Restrictions" => restrictions
         }
+        puts post_body
         res = service.post("ContentKeyAuthorizationPolicyOptions", post_body)
       end
     end

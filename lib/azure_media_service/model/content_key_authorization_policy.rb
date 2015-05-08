@@ -13,7 +13,7 @@ module AzureMediaService
     end
 
     def option_link(options)
-      @request.post("ContentKeyAuthorizationPolicies('#{CGI.escape(self.id)}')/$links/Options", {uri: options.__metadata['uri']})
+      @request.post("ContentKeyAuthorizationPolicies('#{CGI.escape(self.Id)}')/$links/Options", {uri: options.__metadata['uri']})
     end
 
     def delete

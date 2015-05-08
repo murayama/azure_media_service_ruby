@@ -18,7 +18,7 @@ module AzureMediaService
         post_body = {
           "Name" => name,
           "KeyDeliveryType" => key_delivery_type,
-          "Restrictions" => restrictions
+          "Restrictions" => {"results" => restrictions}
         }
         if key_delivery_configuration
           post_body["KeyDeliveryConfiguration"] = key_delivery_configuration

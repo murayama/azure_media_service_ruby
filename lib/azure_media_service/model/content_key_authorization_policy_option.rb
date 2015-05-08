@@ -14,7 +14,7 @@ module AzureMediaService
     }
 
     class << self
-      def create(name:. key_delivery_type:, key_delivery_configuration:, restriction:)
+      def create(name:, key_delivery_type:, key_delivery_configuration:, restriction:)
         post_body = {
           "Name" => name,
           "KeyDeliveryType" => key_delivery_type,

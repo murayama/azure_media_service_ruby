@@ -29,13 +29,13 @@ module AzureMediaService
         check_sum = Base64.strict_encode64(encrypt_data[0,8])
 
         post_body = {
-          "Id" => id,
-          "ContentKeyType" => content_key_type,
+          "Id"                  => id,
+          "ContentKeyType"      => content_key_type,
           "EncryptedContentKey" => encrypted_content_key,
-          "ProtectionKeyId" => protection_key_id,
-          "ProtectionKeyType" => protection_key_type,
-          "Checksum" => check_sum,
-          "Name" => name
+          "ProtectionKeyId"     => protection_key_id,
+          "ProtectionKeyType"   => protection_key_type,
+          "Checksum"            => check_sum,
+          "Name"                => name
         }
         res = service.post("ContentKeys", post_body)
         self.new(res["d"])

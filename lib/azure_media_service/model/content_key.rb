@@ -46,6 +46,10 @@ module AzureMediaService
       end
     end
 
+    def add_authorization_policy(policy_id)
+      res = @request.put("ContentKeys('#{CGI.escape(self.Id)}')", {AuthorizationPolicyId: policy_id})
+    end
+
     # GetKeyDeliveryUrl
     #
     # @params key_delivery_type 1: PlayReady license 2: EnvelopeEncryption

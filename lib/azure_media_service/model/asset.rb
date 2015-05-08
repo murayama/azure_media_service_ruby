@@ -82,7 +82,7 @@ module AzureMediaService
             end
           }
 
-          res = @request.put(put_block_list_url, let) do |headers|
+          res = @request.put_row(put_block_list_url, let) do |headers|
             headers['x-ms-date']      = Time.now.httpdate
             headers['x-ms-version']   = '2014-02-14'
             headers['Content-Type']   = 'text/plain; charset = UTF-8'
@@ -202,7 +202,7 @@ module AzureMediaService
     end
 
     def put_blob(url:, blob:)
-      res = @request.put(url, blob) do |headers|
+      res = @request.put_row(url, blob) do |headers|
         headers['x-ms-blob-type'] = 'BlockBlob'
         headers['x-ms-version']   = '2014-02-14' # Storage API Version
         headers['Content-Type']   = 'application/octet-stream'

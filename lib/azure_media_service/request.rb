@@ -42,7 +42,25 @@ module AzureMediaService
       end
     end
 
-    def put(url, body)
+    def put(endpoint, body)
+      setToken if token_expire?
+
+      res = conn(@config[:mediaURI]).put do |req|
+        req.url endpoint
+        req.headers = @default_headers
+        req.headers[:Authorization] = "Bearer #{@access_token}"
+        req.body = body
+      end
+
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        post(endpoint, body)
+      else
+        res.body
+      end
+    end
+
+    def put_row(url, body)
 
       _conn = conn(url) do |builder|
         builder.request :multipart

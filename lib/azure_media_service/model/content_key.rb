@@ -37,8 +37,7 @@ module AzureMediaService
           "Checksum"            => check_sum,
           "Name"                => name
         }
-        res = service.post("ContentKeys", post_body)
-        self.new(res["d"])
+        create_response(service.post("ContentKeys", post_body))
       end
 
       def get(content_key_id=nil)

@@ -3,8 +3,7 @@ module AzureMediaService
 
     class << self
       def create(name)
-        res = service.post("ContentKeyAuthorizationPolicies", {Name: name})
-        self.new(res["d"])
+        create_response(service.post("ContentKeyAuthorizationPolicies", {Name: name}))
       end
 
       def get(content_key_authorization_policy_id=nil)

@@ -8,8 +8,7 @@ module AzureMediaService
           "DurationInMinutes" => duration_minutes,
           "Permissions" => permission
         }
-        res = service.post("AccessPolicies", post_body)
-        self.new(res["d"])
+        create_response(service.post("AccessPolicies", post_body))
       end
     end
 

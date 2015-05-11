@@ -37,8 +37,7 @@ module AzureMediaService
           "AssetDeliveryPolicyType" => policy_type,
           "AssetDeliveryConfiguration" => configuration
         }
-        res = service.post("AssetDeliveryPolicies", body)
-        self.new(res["d"])
+        create_response(service.post("AssetDeliveryPolicies", body))
       end
 
       def get(asset_delivery_policy_id=nil)

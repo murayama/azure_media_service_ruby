@@ -9,8 +9,7 @@ module AzureMediaService
           "Type" => type,
           "StartTime" => (Time.now - 5*60).gmtime.strftime('%Y-%m-%dT%H:%M:%SZ')
         }
-        res = service.post("Locators", post_body)
-        self.new(res["d"])
+        create_response(service.post("Locators", post_body))
       end
     end
 

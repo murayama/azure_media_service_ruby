@@ -7,8 +7,7 @@ module AzureMediaService
         post_body = {
           "Name" => name
         }
-        res = service.post("Assets", post_body)
-        self.new(res["d"])
+        create_response(service.post("Assets", post_body))
       end
 
       def get(asset_id=nil)

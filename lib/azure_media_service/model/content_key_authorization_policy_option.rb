@@ -23,8 +23,7 @@ module AzureMediaService
         if key_delivery_configuration
           post_body["KeyDeliveryConfiguration"] = key_delivery_configuration
         end
-        res = service.post("ContentKeyAuthorizationPolicyOptions", post_body)
-        self.new(res["d"])
+        create_response(service.post("ContentKeyAuthorizationPolicyOptions", post_body))
       end
 
       def get(content_key_authorization_policy_option_id=nil)

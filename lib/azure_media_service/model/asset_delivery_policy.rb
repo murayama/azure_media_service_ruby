@@ -34,8 +34,8 @@ module AzureMediaService
         body = {
           "Name" => name,
           "AssetDeliveryProtocol" => protocol,
-          "AssetDelivertPolicyType" => protocol,
-          "AssetDeliveryConfiguration": configuration
+          "AssetDeliveryPolicyType" => policy_type,
+          "AssetDeliveryConfiguration" => configuration
         }
         res = service.post("AssetDeliveryPolicies", body)
         self.new(res["d"])

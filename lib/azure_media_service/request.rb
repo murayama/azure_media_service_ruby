@@ -20,6 +20,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         get(endpoint, params)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -38,6 +41,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         post(endpoint, body)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -56,6 +62,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         post(endpoint, body)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -80,6 +89,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         put(url, body)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -99,6 +111,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         delete(endpoint, params)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end

@@ -102,12 +102,17 @@ module AzureMediaService
       if id.nil?
         res = @request.get(method)
         results = []
-        res["d"]["results"].each do |a|
-          results << klass.new(a)
+        if res["d"]
+          res["d"]["results"].each do |a|
+            results << klass.new(a)
+          end
         end
       else
         res = @request.get("#{method}('#{id}')")
-        results = klass.new(res["d"])
+        results = nil
+        if res["d"]
+          results = klass.new(res["d"])
+        end
       end
       results
     end

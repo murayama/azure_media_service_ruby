@@ -5,11 +5,12 @@ module AzureMediaService
       CommonEncryption:        0,
       StorageEncryption:       1,
       ConfigurationEncryption: 2,
+      UrlEncryption:           3,
       EnvelopeEncryption:      4
     }
 
     class << self
-      def create(content_key:, content_key_type: 1,protection_key_type: 0, name: nil )
+      def create(content_key:, content_key_type: 4,protection_key_type: 0, name: nil )
         id = "nb:kid:UUID:#{SecureRandom.uuid.upcase}"
         # content_key = SecureRandom.random_bytes(16)
         protection_key_id = service.get_protection_key_id(content_key_type)

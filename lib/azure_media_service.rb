@@ -5,12 +5,16 @@ require 'azure_media_service/request'
 require 'azure_media_service/service'
 require 'azure_media_service/model'
 
+require 'base64'
+require 'openssl'
+require 'securerandom'
 require 'faraday'
 require 'faraday_middleware'
 require 'time'
 require 'mime/types'
 require 'base64'
 require 'builder/xmlmarkup'
+
 
 module AzureMediaService
 

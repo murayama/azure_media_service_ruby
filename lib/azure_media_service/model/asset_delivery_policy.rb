@@ -2,12 +2,12 @@ module AzureMediaService
   class AssetDeliveryPolicy < Model::Base
 
     Protocol = {
-      None:            0,
-      SmoothStreaming: 1,
-      Dash:            2,
-      HLS:             3,
-      Hds:             4,
-      All:             5
+      None:            0x0,
+      SmoothStreaming: 0x1,
+      Dash:            0x2,
+      HLS:             0x4,
+      Hds:             0x8,
+      All:             0xFFFF
     }
 
     PolicyType = {

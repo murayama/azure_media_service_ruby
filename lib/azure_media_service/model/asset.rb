@@ -190,6 +190,10 @@ module AzureMediaService
       @request.post("Assets('#{CGI.escape(self.Id)}')/$links/ContentKeys", {uri: content_key.__metadata['uri']})
     end
 
+    def delivery_policy_link(asset_delivery_policy)
+      @request.post("Assets('#{CGI.escape(self.Id)}')/$links/DeliveryPolicies", {uri: asset_delivery_policy.__metadata['uri']})
+    end
+
     private
 
     def clear_cache

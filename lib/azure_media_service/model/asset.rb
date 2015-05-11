@@ -54,6 +54,19 @@ module AzureMediaService
       @content_keys
     end
 
+    def delivery_policies
+      @delivery_policies ||= []
+      if @delivery_policies.empty?
+        _uri = URI.parse(self.DeliveryPolicies["__deferred"]["uri"])
+        url = _uri.path.gsub('/api/','')
+        res = @request.get(url)
+        res["d"]["results"].each do |v|
+          @delivery_policies << AssetDeliveryPolicy.new(v)
+        end
+      end
+      @delivery_policies
+    end
+
     def upload(filepath)
       begin
         mime_type = MIME::Types.type_for(filepath)[0].to_s
@@ -199,6 +212,7 @@ module AzureMediaService
       @locators = nil
       @files = nil
       @content_keys = nil
+      @delivery_policies = nil
       self
     end
 

@@ -1,11 +1,19 @@
 module AzureMediaService
   class Asset < Model::Base
 
+    Options = {
+      None:                       0,
+      StorageEncrypted:           1,
+      CommonEncryptionProtected:  2,
+      EnvelopEncryptionProtected: 4
+    }
+
     class << self
 
-      def create(name)
+      def create(name, options=0)
         post_body = {
-          "Name" => name
+          "Name" => name,
+          "Options" => options
         }
         create_response(service.post("Assets", post_body))
       end
@@ -122,6 +130,8 @@ module AzureMediaService
         @request.get("CreateFileInfos", {"assetid" => "'#{URI.encode(self.Id)}'"})
 
         clear_cache
+        policy.delete
+        locator.delete
       rescue => e
         raise MediaServiceError.new(e.message)
       end

@@ -13,5 +13,15 @@ module AzureMediaService
       end
     end
 
+    def delete
+      begin 
+        res = @request.delete("Locators('#{self.Id}')")
+        clear_cache
+      rescue => e
+        raise MediaServiceError.new(e.message)
+      end
+      res
+    end
+
   end
 end

@@ -12,5 +12,14 @@ module AzureMediaService
       end
     end
 
+    def delete
+      begin 
+        res = @request.delete("AccessPolicies('#{self.Id}')")
+      rescue => e
+        raise MediaServiceError.new(e.message)
+      end
+      res
+    end
+
   end
 end

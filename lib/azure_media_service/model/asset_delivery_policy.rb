@@ -45,5 +45,14 @@ module AzureMediaService
         service.get("AssetDeliveryPolicies", AssetDeliveryPolicy, asset_delivery_policy_id)
       end
     end
+
+    def delete
+      begin 
+        res = @request.delete("AssetDeliveryPolicies('#{self.Id}')")
+      rescue => e
+        raise MediaServiceError.new(e.message)
+      end
+      res
+    end
   end
 end

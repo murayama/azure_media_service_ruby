@@ -1,7 +1,5 @@
 module AzureMediaService
-  module Model
-    class MediaProcessor < Base
+  class MediaProcessor < Model::Base
 
-    end
   end
 end

@@ -1,7 +1,5 @@
 module AzureMediaService
-  module Model
-    class AssetFile < Base
+  class AssetFile < Model::Base
 
-    end
   end
 end

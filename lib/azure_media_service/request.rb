@@ -20,6 +20,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         get(endpoint, params)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -38,11 +41,35 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         post(endpoint, body)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
 
-    def put(url, body)
+    def put(endpoint, body)
+      setToken if token_expire?
+
+      res = conn(@config[:mediaURI]).put do |req|
+        req.url endpoint
+        req.headers = @default_headers
+        req.headers[:Authorization] = "Bearer #{@access_token}"
+        req.body = body
+      end
+
+      if res.status == 301
+        @config[:mediaURI] = res.headers['location']
+        post(endpoint, body)
+      else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
+        res.body
+      end
+    end
+
+    def put_row(url, body)
 
       _conn = conn(url) do |builder|
         builder.request :multipart
@@ -62,6 +89,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         put(url, body)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -81,6 +111,9 @@ module AzureMediaService
         @config[:mediaURI] = res.headers['location']
         delete(endpoint, params)
       else
+        if res.headers[:error]
+          raise MediaServiceError.new("#{res.headers[:error]}: #{res.headers[:error_description]}")
+        end
         res.body
       end
     end
@@ -100,7 +133,7 @@ module AzureMediaService
         "Accept"                => "application/json;odata=verbose",
         "DataServiceVersion"    => "3.0",
         "MaxDataServiceVersion" => "3.0",
-        "x-ms-version"          => "2.5"
+        "x-ms-version"          => "2.9"
       }
     end
 

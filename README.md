@@ -22,7 +22,7 @@ Or install it yourself as:
 
 # initialize
 AzureMediaService.configure do |config|
- cofig.id = 'xxxxxxxx'
+ config.id = 'xxxxxxxx'
  config.secret = 'xxxxxxxxxxxxxxxxxx'
 end
 

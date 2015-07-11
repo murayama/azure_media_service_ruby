@@ -32,7 +32,8 @@ p :upload_successful
 p :encode_asset
 
 # Encode asset in 720 H264
-p asset.encode_job('H264 Smooth Streaming 720p')
+p asset.encode_job('H264 Broadband 1080p')
+# p asset.encode_job('H264 Smooth Streaming 720p')
 
 # Verify upload: https://manage.windowsazure.com/
 p :done

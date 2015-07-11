@@ -21,3 +21,4 @@ tmp
 *.a
 mkmf.log
 samples/*.mp4
+.idea

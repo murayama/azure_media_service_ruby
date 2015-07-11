@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'azure_media_service'
 
-p :start
+p :upload_content
 
 # initialize
 AzureMediaService.configure do |config|
@@ -25,6 +25,8 @@ media_file_name = 'H264_test3_Talkingheadclipped_mp4_480x360.mp4'
 # Upload file
 ams = AzureMediaService.service
 asset = ams.upload_media(media_file_name)
+
+p asset
 
 # Verify upload: https://manage.windowsazure.com/
 p :done

@@ -6,9 +6,9 @@ p :upload_content
 # initialize
 AzureMediaService.configure do |config|
   # Media Service Account Name
-  config.id = 'thisismytest'
+  config.id = 'wiprolimited'
   # Media Service Access Key
-  config.secret = 'fW5f/kjOY4v5eIVCUZebInIJvbmS49M1+1rlzPLOJsg='
+  config.secret = 'robpEX8IQjir0wZEcFGo+Xp+H2GhazBTa9te3yM8+RQ='
 end
 
 # Test files located at

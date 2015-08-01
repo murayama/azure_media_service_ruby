@@ -34,6 +34,17 @@ end
 
 # Create OnDemand Locator
 p job.output_assets.first.publish
+manifest = job.output_assets.first.publish_url
 
-# Print Publish URL
-p job.output_assets.first.publish_url
+# Print Smooth Publish URL
+smooth_url = manifest
+
+# Print HLS Publish URL
+hls_url = manifest + "(format=m3u8-aapl)"
+
+# Print DASH Publish URL
+dash_url = manifest + "(format=mpd-time-csf)"
+
+puts "Smooth URL: #{smooth_url}"
+puts "HLS URL: #{hls_url}"
+puts "DASH URL: #{dash_url}"

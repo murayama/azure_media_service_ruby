@@ -64,7 +64,7 @@ asset.encode_job('Custom Encode Task')
 ```ruby
 asset = AzureMediaService::Asset.get(asset_id)
 
-key = ScureRandom::random_bytes(16)
+key = SecureRandom::random_bytes(16)
 
 content_key = AzureMediaService::ContentKey.create({
   content_key: key,

@@ -140,7 +140,7 @@ module AzureMediaService
 
 
     def encode_job(encode_configuration) 
-      media_processor = @service.media_processor_id_by_name('Windows Azure Media Encoder')
+      media_processor = @service.media_processor_id_by_name('Media Encoder Standard')
 
       conf_str = encode_configuration.gsub(' ', '_')
 

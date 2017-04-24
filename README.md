@@ -37,10 +37,10 @@ asset.upload('path/to/example.mp4')
 
 # encode job
 asset = AzureMediaService::Asset.get('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')
-job = asset.encode_job('H264 Smooth Streaming 720p')
+job = asset.encode_job('Adaptive Streaming')
 
 # or
-job = AzureMediaService::Job.create('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 'H264 Smooth Streaming 720p')
+job = AzureMediaService::Job.create('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx', 'Adaptive Streaming')
 
 # publish asset
 asset = AzureMediaService::Asset.get('nb:cid:UUID:xxxxxxxxxxx-xxxxxxxxxxx-xxxxxx-xxxxxxx')

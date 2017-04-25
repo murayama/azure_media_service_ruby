@@ -81,7 +81,7 @@ module AzureMediaService
     def media_processor_id_by_name(name)
       res = @request.get('MediaProcessors')
       mp = res["d"]["results"].select {|v| 
-        v["Name"] == 'Windows Azure Media Encoder'
+        v["Name"] == 'Media Encoder Standard'
       }.sort{|a,b|
         b["Version"].to_i <=> a["Version"].to_i
       }.first

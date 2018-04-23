@@ -21,33 +21,24 @@ module AzureMediaService
   @@tasks = {}
 
   class << self
+    attr_accessor :id
+    attr_accessor :token_uri
+    attr_accessor :media_uri
+    attr_accessor :api_version
+    attr_accessor :secret
 
     def configure
       yield self
     end
 
     def request
-      @@request ||= Request.new(client_id:@@id, client_secret:@@secret)
+      @request ||= Request.new(
+        client_id: @id, client_secret: @secret, tokenURI: @token_uri, mediaURI: @media_uri, api_version: @api_version
+      )
     end
 
     def service
-      @@service ||= Service.new
-    end
-
-    def id=(v)
-      @@id = v
-    end
-
-    def id
-      @@id
-    end
-
-    def secret=(v)
-      @@secret = v
-    end
-
-    def secret
-      @@secret
+      @service ||= Service.new
     end
 
     def add_encode_task(name, task)

@@ -24,6 +24,9 @@ Or install it yourself as:
 AzureMediaService.configure do |config|
  cofig.id = 'xxxxxxxx'
  config.secret = 'xxxxxxxxxxxxxxxxxx'
+ config.token_uri = 'https://login.microsoft.com/{tenant_id}/oauth2/token'
+ config.media_uri = 'https://{service}.restv2.{region}.media.azure.net/api/'
+ config.api_version = '2.xx' # Defaults to 2.9
 end
 
 # upload file

@@ -123,17 +123,17 @@ module AzureMediaService
 
       @config = config || {}
       # @config[:mediaURI] = "https://media.windows.net/API/"
-      @config[:mediaURI] = Config::MEDIA_URI
-      @config[:tokenURI] = Config::TOKEN_URI
-      @config[:client_id] ||= ''
-      @config[:client_secret] ||= ''
+      @config[:mediaURI] || raise(MediaServiceError.new('Media URI missing, please specify in config'))
+      @config[:tokenURI] || raise(MediaServiceError.new('Token URI missing, please specify in config'))
+      @config[:client_id] || raise(MediaServiceError.new('Client ID missing, please specify in config'))
+      @config[:client_secret] || raise(MediaServiceError.new('Client secret missing, please specify in config'))
 
       @default_headers = {
         "Content-Type"          => "application/json;odata=verbose",
         "Accept"                => "application/json;odata=verbose",
         "DataServiceVersion"    => "3.0",
         "MaxDataServiceVersion" => "3.0",
-        "x-ms-version"          => "2.9"
+        "x-ms-version"          => @config[:api_version] || Config::API_VERSION
       }
     end
 
@@ -156,7 +156,7 @@ module AzureMediaService
           client_id: @config[:client_id], 
           client_secret: @config[:client_secret],
           grant_type: 'client_credentials',
-          scope: 'urn:WindowsAzureMediaServices'
+          resource: 'https://rest.media.azure.net'
         }
       end
 

@@ -22,7 +22,7 @@ Or install it yourself as:
 
 # initialize
 AzureMediaService.configure do |config|
- cofig.id = 'xxxxxxxx'
+ config.id = 'xxxxxxxx'
  config.secret = 'xxxxxxxxxxxxxxxxxx'
  config.token_uri = 'https://login.microsoft.com/{tenant_id}/oauth2/token'
  config.media_uri = 'https://{service}.restv2.{region}.media.azure.net/api/'
@@ -67,7 +67,7 @@ asset.encode_job('Custom Encode Task')
 ```ruby
 asset = AzureMediaService::Asset.get(asset_id)
 
-key = ScureRandom::random_bytes(16)
+key = SecureRandom::random_bytes(16)
 
 content_key = AzureMediaService::ContentKey.create({
   content_key: key,
